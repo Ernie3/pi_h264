@@ -48,23 +48,15 @@
       }
 
       function getSetting(deviceId, setting) {
-        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + setting + '/' + deviceId, 'GET');
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + deviceId + '/' + setting, 'GET');
       }
 
       function setSetting(deviceId, setting, value) {
-        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + setting + '/' + deviceId + '/' + value, 'POST');
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + deviceId + '/' + setting + '/' + value, 'POST');
       }
 
       function getSettings() {
-        return makeRequest(CAMERA_SETTINGS_API_BASE_URL +'settings', 'GET');
-      }
-
-      function shutdown() {
-        var prompt = confirm("WARNING! You are about to shutdown this Raspberry Pi.");
-
-        if (prompt == true) {
-          return makeRequest(CAMERA_SETTINGS_API_BASE_URL + 'shutdown', 'POST');
-        }
+        return makeRequest(CAMERA_SETTINGS_API_BASE_URL + 'settings', 'GET');
       }
 
       function toggleOptions() {
