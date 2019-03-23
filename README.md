@@ -55,5 +55,24 @@ disable - disables pi_h264 from starting on boot (service must be installed)
 uninstall - completely removes pi_h264 service from systemctl
 ```
 
-## Technical Description
+## How to use by-path (by USB port)
+Template
+```
+Top Left USB | Top Right USB
+----------------------------
+Bot Left USB | Bot Right USB
+```
+
+For Raspberry Pi Model B+
+```
+/dev/v4l/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0-video-index0 | /dev/v4l/by-path/platform-3f980000.usb-usb-0:1.3:1.0-video-index0
+-----------------------------------------------------------------------------------------------------
+/dev/v4l/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0-video-index0 | /dev/v4l/by-path/platform-3f980000.usb-usb-0:1.2:1.0-video-index0
+```
+
+### Technical Description
 The client (web browser) uses broadway (h264 software decoder) to decode NAL h264 packets and rendering the decoded frames to the html canvas. For receiving NAL h264 baseline packets from the server (Raspberry Pi), the client uses a websocket using socket.io. On the server, it uses the specified USB camera to get NAL baseline h264 packets from ffmpeg and sends it over the websocket to the client.  
+
+### More Helpful Stuff
+* [Installing Node.js on a Raspberry Pi](https://github.com/Ernie3/pi_h264#help-installing-nodejs-v10-on-the-pi)
+* [pi_h264](https://github.com/Ernie3/pi_h264)

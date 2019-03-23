@@ -5,10 +5,10 @@ const config = require('./config.json');
 const NALseparator = Buffer.from([0,0,0,1]);//NAL break
 
 function start(socket) {
-	console.log("==> starting stream")
+	console.log("==> starting stream");
 	console.log("CONFIGURATION =>", config);
 
-	var proc = spawn("ffmpeg",[
+	var proc = spawn("ffmpeg", [
 		"-s",config.width+"x"+config.height,
 		"-re",
 		"-framerate",config.fps+"",
@@ -26,12 +26,12 @@ function start(socket) {
 		"-preset","ultrafast",
 		"-y",
 		"-"
-	])
+	]);
 
 	let rawstream = proc.stdout.pipe(new Split(NALseparator));
 
-	rawstream.on("data",function(data){
-		socket.emit("nal_packet",Buffer.concat([NALseparator, data]));
+	rawstream.on("data", function(data){
+		socket.emit("nal_packet", Buffer.concat([NALseparator, data]));
 	});
 
 	proc.stderr.on("data", function(data) {
@@ -43,16 +43,16 @@ function start(socket) {
 
 		// Ouch
 		if(d.includes("Device or resource busy")) {
-			console.log("Device busy... exiting program.");
+			console.error("Device busy... exiting program.", d);
 			process.exit(1);
 		}
 	});
 
 	proc.on("close", function(code){
-		console.warn("process exit with code: " + code)
+		console.warn("process exit with code: " + code);
 	});
 
-	return proc
+	return proc;
 }
 
 exports.start = start

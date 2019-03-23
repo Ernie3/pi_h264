@@ -36,19 +36,16 @@ io.on('connection', function (socket) {
     console.log(data);
   });
 
-  socket.on("start_stream", function(data){
+  socket.on("start_stream", function(data) {
   	console.log("==> start_stream");
   	startStream(socket);
-  })
+  });
 
   socket.on("stop_stream", function(data) {
   	console.log("==> stop_stream");
   	stopStream();
   });
-
-
 });
-
 
 let currentlyStreaming = false;
 function startStream(socket) {
