@@ -2,7 +2,7 @@
   <header>
     <title>Raspberry Pi - H.264 Stream</title>
 
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link type="text/css" href="/style.css"/>
     
     <!-- Main app and Socket.io scripts -->
     <script type="text/javascript" src="js/main.js"></script>
@@ -133,10 +133,8 @@
     <div id="canvas_container_id"></div>
 
     <button id="toggle_button" onclick="toggleOptions()">Show Options</button>
-    <div id="options">
+    <div id="options" style="display:none">
         <div id="sliders"></div>
-        <br>
-        <button onclick="shutdown()">Shutdown</button><br>
       </div>
   </body>
 </html>
