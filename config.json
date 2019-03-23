@@ -1,5 +1,5 @@
 {
-    "port": 9001,
+    "port": 5800,
     "device": "/dev/video0",
     "fps": 24,
     "width": 360,

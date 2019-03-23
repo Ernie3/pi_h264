@@ -1,7 +1,7 @@
 {
   "name": "pi_h264",
   "version": "1.0.0",
-  "description": "H.264 live stream to brouser ",
+  "description": "Live Streaming using H.264",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -15,7 +15,7 @@
     "socket.io": "2.2.0",
     "stream-split": "1.1.0"
   },
-  "author": "devalexqt@gmail/com",
+  "author": "ernestgwilsoniii@gmail.com",
   "bugs": {
     "url": "https://github.com/Ernie3/pi_h264/issues"
   },

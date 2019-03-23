@@ -1,61 +1,56 @@
-var http=require("http")
-var os=require("os")
-var netInt=os.networkInterfaces()
-var fs=require("fs")
-var streamer=require("./streamer.js")
-//var WebSocket=require("ws")
+const http=require("http")
+const os = require("os")
+const netInt = os.networkInterfaces()
+const fs = require("fs")
+const streamer = require("./streamer.js")
 const config = require('./config.json');
 
-console.log("Starting server on +:" + config.port);
+let port = config.port;
+console.log("Starting server on +:" + port);
 
-var server=http.createServer(function(req,res){
-	console.log("==> new connection: "+req.connection.remoteAddress+", url: "+req.url)
-	//res.end("Hi from Raspberry!")
-	var filename=req.url=="/"?"/index.html":req.url
-	var method=req.method.toLowerCase()
-	//console.log("==>method: "+method)
+let server = http.createServer(function(req,res) {
+	console.log("==> new connection: " + req.connection.remoteAddress+", url: " + req.url);
 	
+	let filename = req.url == "/" ? "/index.html" : req.url;
+	let method = req.method.toLowerCase();
 
-if(method=="get"&&req.url!="/videostream.mp4"){
-	var file=fs.createReadStream("www"+filename)
-	file.on("error",function(err){
-		console.log("Can't open file, err: "+err)
-	})
-	file.pipe(res)
-}//if no videostream
-	else if(method=="get"&&req.url=="/videostream.mp4"){
-		console.log("==> video stream request")
-	}//videostream
+	if(method === "get") {
+		let file = fs.createReadStream("www"+filename);
+		file.on("error", function(err){
+			console.log("Can't open file, err: "+err)
+		});
+		file.pipe(res);
+	}
 
-}).listen(config.port)
+}).listen(port);
 
-var stream
+let stream;
 
 //socket.io
-var io = require('socket.io')(server)
+let io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
-  socket.emit('data', { data: 'Hi from server' })
+  socket.emit('data', { data: 'Hi from server' });
 
   socket.on('data', function (data) {
     console.log(data);
+  });
+
+  socket.on("start_stream", function(data){
+  	console.log("==> start_stream");
+  	startStream(socket);
   })
 
-  socket.on("start_stream",function(data){
-  	console.log("==> start_stream")
-  	startStream(socket)
-  })//start stream
-
-  socket.on("stop_stream",function(data){
-  	console.log("==> stop_stream")
-  	stopStream()
-  })//start stream
+  socket.on("stop_stream", function(data) {
+  	console.log("==> stop_stream");
+  	stopStream();
+  });
 
 
-})//io
+});
 
 
-var currentlyStreaming = false;
+let currentlyStreaming = false;
 function startStream(socket) {
 	// if stream is already running
 	// stop that one for new one
@@ -64,42 +59,18 @@ function startStream(socket) {
 	}
 	currentlyStreaming = true;
 
-	stream=new streamer.start(socket)
-}//startStream
-function stopStream(socket){
-	console.log("==> stoping stream")
-	try{
-		stream.kill()
-	}catch(err){console.log(err)}
-}//startStream
-//websocket
-//var wsServer=new WebSocket.Server({server})//{port:8081}
-	
-// 	wsServer.on("connection",function(ws){
-// 		console.log("==>new ws client: ")
+	stream = new streamer.start(socket);
+}
 
+function stopStream(socket) {
+	console.log("==> stoping stream");
 
-// 		ws.on("message",function(data){
-// 			console.log("==>new ws message: "+data.toString())
-// 			 	//ff_stream=new ffmpeg.start(wsServer)
+	try {
+		stream.kill();
+	} catch(err) {
+		console.error(err);
+	}
+}
 
-// 			var j_data=JSON.parse(data.toString())
-// 				if(j_data.action=="start_video"){
-// 					console.log("==>starting video")
-// 				ff_stream=new ffmpeg.start(wsServer)
-// 				}//start video
-// 				if(j_data.action=="stop_video"){
-// 					console.log("==>stoping video")
-// 					try{ff_stream.kill()}
-// 					catch(e){console.log(e)}
-// 				}//start video
-// 		})//
-
-// 		ws.on("close",function(){
-// 			console.log("==>ws client closed: ")
-// 		})//
-	
-// })//cconected socked
-
-console.log("Server started from smb!")
-console.log(netInt)
+console.log("Server started from smb!");
+console.log(netInt);
