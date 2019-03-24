@@ -1,8 +1,7 @@
-const http = require("http")
-const os = require("os")
-const netInt = os.networkInterfaces()
-const fs = require("fs")
-const streamer = require("./streamer.js")
+const http = require("http");
+const os = require("os");
+const fs = require("fs");
+const streamer = require("./streamer.js");
 const config = require('./config.json');
 
 let port = config.port;
@@ -16,9 +15,10 @@ let server = http.createServer(function(req,res) {
 
 	if(method === "get") {
 		let file = fs.createReadStream("www" + filename);
-		file.on("error", function(err){
-			console.log("Can't open file, err: "+err)
+		file.on("error", function(err) {
+			console.error("Failed to open file", err)
 		});
+		
 		file.pipe(res);
 	}
 
@@ -29,10 +29,10 @@ let stream;
 // socket.io
 let io = require('socket.io')(server);
 
-io.on('connection', function (socket) {
+io.on('connection', function(socket) {
   socket.emit('data', { data: 'Hi from server' });
 
-  socket.on('data', function (data) {
+  socket.on('data', function(data) {
     console.log(data);
   });
 
@@ -51,7 +51,7 @@ let currentlyStreaming = false;
 
 function startStream(socket) {
 	// if stream is already running
-	// stop that one for new one
+	// stop that one for the new one
 	if(currentlyStreaming) {
 		stopStream(socket);
 	}
@@ -70,5 +70,4 @@ function stopStream(socket) {
 	}
 }
 
-console.log("Server started from smb!");
-console.log(netInt);
+console.log(os.networkInterfaces());
