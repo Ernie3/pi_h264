@@ -1,4 +1,4 @@
-const http=require("http")
+const http = require("http")
 const os = require("os")
 const netInt = os.networkInterfaces()
 const fs = require("fs")
@@ -9,13 +9,13 @@ let port = config.port;
 console.log("Starting server on +:" + port);
 
 let server = http.createServer(function(req,res) {
-	console.log("==> new connection: " + req.connection.remoteAddress+", url: " + req.url);
+	console.log("==> new connection: " + req.connection.remoteAddress + ", url: " + req.url);
 	
 	let filename = req.url == "/" ? "/index.html" : req.url;
 	let method = req.method.toLowerCase();
 
 	if(method === "get") {
-		let file = fs.createReadStream("www"+filename);
+		let file = fs.createReadStream("www" + filename);
 		file.on("error", function(err){
 			console.log("Can't open file, err: "+err)
 		});
@@ -26,7 +26,7 @@ let server = http.createServer(function(req,res) {
 
 let stream;
 
-//socket.io
+// socket.io
 let io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
@@ -48,6 +48,7 @@ io.on('connection', function (socket) {
 });
 
 let currentlyStreaming = false;
+
 function startStream(socket) {
 	// if stream is already running
 	// stop that one for new one
