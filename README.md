@@ -1,5 +1,5 @@
 # Live streaming from Raspberry Pi using H.264
-based on [broadway](https://github.com/mbebenita/Broadway)
+Note: This has only been tested on Raspbian Stretch.
 
 ## Prerequisites
 1. [Node.js](https://www.w3schools.com/nodejs/nodejs_raspberrypi.asp)
@@ -71,4 +71,4 @@ For Raspberry Pi Model B+
 ```
 
 ### Technical Description
-The client (web browser) uses broadway (h264 software decoder) to decode NAL h264 packets and rendering the decoded frames to the html canvas. For receiving NAL h264 baseline packets from the server (Raspberry Pi), the client uses a websocket using socket.io. On the server, it uses the specified USB camera to get NAL baseline h264 packets from ffmpeg and sends it over the websocket to the client.  
+The client (web browser) uses [broadway](https://github.com/mbebenita/Broadway) (h264 software decoder) to decode NAL h264 packets and rendering the decoded frames to the html canvas. For receiving NAL h264 baseline packets from the server (Raspberry Pi), the client uses a websocket using socket.io. On the server, it uses the specified USB camera to get NAL baseline h264 packets from ffmpeg and sends it over the websocket to the client.  
